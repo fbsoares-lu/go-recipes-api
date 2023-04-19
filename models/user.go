@@ -10,6 +10,7 @@ type User struct {
 	Name     string `json:"name" validate:"nonzero"`
 	Email    string `json:"email" validate:"nonzero" gorm:"unique"`
 	Password string `json:"password" validate:"nonzero"`
+	Role     string `json:"role" validate:"nonzero"`
 }
 
 func Validate(user *User) error {

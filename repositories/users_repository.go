@@ -7,8 +7,8 @@ import (
 	"gorm.io/gorm"
 )
 
-func Create(name string, email string, password string) *gorm.DB {
-	user := models.User{Name: name, Email: email, Password: password}
+func Create(name string, email string, password string, role string) *gorm.DB {
+	user := models.User{Name: name, Email: email, Password: password, Role: role}
 	result := database.DB.Create(&user)
 
 	return result
