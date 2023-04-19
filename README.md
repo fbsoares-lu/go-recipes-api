@@ -26,8 +26,6 @@ Application advantages:
 
 The application is available in beta version, and may present some bugs during the process.
 
-</br>
-
 ### Developed With
 
 This section should list any major frameworks/libraries used in this project. Here are a few examples.
@@ -36,15 +34,11 @@ This section should list any major frameworks/libraries used in this project. He
 * [![Postgres][Postgres]][Postgres-url]
 * [![AWS][AWS]][AWS-url]
 
-</br>
-
 
 ## Getting Started
 
 This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
-
-</br>
 
 ### Installation
 
@@ -70,7 +64,6 @@ Use this space to show useful examples of how a project can be used. Additional 
 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
-</br>
 
 <!-- CONTACT -->
 ## Contact
