@@ -28,7 +28,7 @@ O aplicativo encontra-se na versão beta, podendo ocorrer alguns bug no deccorer
 
 </br>
 
-### Built With
+### Developed With
 
 This section should list any major frameworks/libraries used in this project. Here are a few examples.
 
