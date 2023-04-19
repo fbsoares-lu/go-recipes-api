@@ -11,14 +11,15 @@ import (
 func HandleRequests() {
 	r := gin.Default()
 
+	r.MaxMultipartMemory = 8 << 20
+	r.Static("/assets", "./assets")
+
+	r.POST("/api/uploads", controllers.Upload)
 	r.POST("/api/signup", controllers.Signup)
 	r.POST("/api/login", controllers.Login)
 	r.GET("/api/users", middlewares.RequiredAuth, func(c *gin.Context) {
 		user, _ := c.Get("user")
-
-		// OBS
 		// user.(models.User).Name
-
 		c.JSON(http.StatusOK, gin.H{
 			"message": user,
 		})

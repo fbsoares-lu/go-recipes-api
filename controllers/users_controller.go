@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fbsoares-lu/go-recipes-api/models"
 	"fbsoares-lu/go-recipes-api/repositories"
 	"net/http"
 	"os"
@@ -12,20 +13,16 @@ import (
 )
 
 func Signup(c *gin.Context) {
-	var body struct {
-		Name     string
-		Email    string
-		Password string
-	}
+	var user models.User
 
-	if c.Bind(&body) != nil {
+	if err := models.Validate(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Failed to read body",
 		})
 		return
 	}
 
-	hash, err := bcrypt.GenerateFromPassword([]byte(body.Password), 10)
+	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -34,7 +31,7 @@ func Signup(c *gin.Context) {
 		return
 	}
 
-	result := repositories.Create(body.Name, body.Email, string(hash))
+	result := repositories.Create(user.Name, user.Email, string(hash))
 
 	if result.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
