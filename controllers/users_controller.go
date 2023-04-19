@@ -17,7 +17,7 @@ func Signup(c *gin.Context) {
 
 	if err := models.Validate(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Failed to read body",
+			"error": err.Error(),
 		})
 		return
 	}
