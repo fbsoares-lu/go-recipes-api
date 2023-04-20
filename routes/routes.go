@@ -29,5 +29,12 @@ func HandleRequests() {
 		})
 	})
 
+	// Recipes
+	r.POST("/api/recipes", middlewares.RequiredAuth, controllers.CreateRecipe)
+	r.GET("/api/recipes", middlewares.RequiredAuth, controllers.FindRecipe)
+
+	r.POST("/api/ingredients", middlewares.RequiredAuth, controllers.CreateIngredient)
+	r.GET("/api/ingredients", middlewares.RequiredAuth, controllers.FindIngredient)
+
 	r.Run(":5000")
 }

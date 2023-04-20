@@ -1,4 +1,3 @@
-<!-- PROJECT LOGO -->
 <br />
 <div align="center">
   <!-- <a href="https://github.com/othneildrew/Best-README-Template">
@@ -14,7 +13,6 @@
 </div>
 
 
-<!-- ABOUT THE PROJECT -->
 ## About The Project
 
 there are a many people who do not know the pratical way of cooking these days. From that, I developed an application called Go.Recipes that aims help people to cook from new recipes that will be available on the mobile application.
