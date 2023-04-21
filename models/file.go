@@ -6,4 +6,5 @@ type File struct {
 	gorm.Model
 	OriginalName string
 	RecipeId     uint
+	ProfileID    uint
 }
