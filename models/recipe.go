@@ -7,4 +7,5 @@ type Recipe struct {
 	Name        string        `json:"name"`
 	Description string        `json:"description"`
 	Ingredients []*Ingredient `json:"ingredients" gorm:"many2many:recipe_ingredients;"`
+	Files       []File        `json:"files"`
 }

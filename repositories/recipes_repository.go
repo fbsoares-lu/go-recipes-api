@@ -8,7 +8,7 @@ import (
 
 func FindRecipe() ([]models.Recipe, error) {
 	var recipes []models.Recipe
-	err := database.DB.Find(&recipes).Where("deleted_at", nil).Preload("Ingredients").Find(&recipes).Error
+	err := database.DB.Find(&recipes).Where("deleted_at", nil).Preload("Ingredients").Preload("Files").Find(&recipes).Error
 	return recipes, err
 }
 

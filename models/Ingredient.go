@@ -7,6 +7,4 @@ type Ingredient struct {
 	Name        string
 	Description string
 	Recipes     []*Recipe `gorm:"many2many:recipe_ingredients;"`
-	// FileRefer   uint
-	// File        File `gorm:"foreignKey:FileRefer"`
 }
