@@ -10,7 +10,7 @@
     An application that aims to share new recipes with other people!
   </p>
   </br>
-</div>
+</div> 
 
 
 ## About The Project
