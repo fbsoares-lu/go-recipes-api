@@ -23,8 +23,12 @@ func HandleRequests() {
 			"message": user,
 		})
 	})
-	r.POST("/api/recipes", middlewares.RequiredAuth, controllers.CreateRecipe)
 	r.GET("/api/recipes", middlewares.RequiredAuth, controllers.FindRecipe)
+	r.GET("/api/recipes/:id", middlewares.RequiredAuth, controllers.FindOneRecipe)
+	r.POST("/api/recipes", middlewares.RequiredAuth, controllers.CreateRecipe)
+	r.PUT("/api/recipes/:id", middlewares.RequiredAuth, controllers.UpdateRecipe)
+	r.DELETE("/api/recipes/:id", middlewares.RequiredAuth, controllers.DeleteRecipe)
+
 	r.POST("/api/ingredients", middlewares.RequiredAuth, controllers.CreateIngredient)
 	r.GET("/api/ingredients", middlewares.RequiredAuth, controllers.FindIngredient)
 

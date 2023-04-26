@@ -1,7 +1,9 @@
 package models
 
+import "gorm.io/gorm"
+
 type Thread struct {
-	Title       string
+	gorm.Model
 	Description string
 	RecipeID    int
 	Recipe      Recipe
