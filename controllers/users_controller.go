@@ -8,7 +8,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Signup(c *gin.Context) {
+type UserController struct {
+	UserService services.UserService
+}
+
+func (uc *UserController) Signup(c *gin.Context) {
 	var user models.User
 
 	if err := c.ShouldBindJSON(&user); err != nil {
@@ -24,11 +28,17 @@ func Signup(c *gin.Context) {
 		return
 	}
 
-	services.CreateUserService(user, c)
+	err := uc.UserService.CreateUser(user)
+
+	if err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+
 	c.JSON(http.StatusOK, gin.H{})
 }
 
-func Login(c *gin.Context) {
+func (uc *UserController) Login(c *gin.Context) {
 	var body struct {
 		Email    string
 		Password string
@@ -41,6 +51,14 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	services.Authentication(body.Email, body.Password, c)
+	token, err := uc.UserService.Authentication(body.Email, body.Password)
+
+	if err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+
+	c.SetSameSite(http.SameSiteLaxMode)
+	c.SetCookie("Authorization", token, 3600*24*30, "", "", false, true)
 	c.JSON(http.StatusOK, gin.H{})
 }

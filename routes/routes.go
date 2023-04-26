@@ -3,7 +3,6 @@ package routes
 import (
 	"fbsoares-lu/go-recipes-api/controllers"
 	"fbsoares-lu/go-recipes-api/middlewares"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,16 +12,10 @@ func HandleRequests() {
 
 	r.MaxMultipartMemory = 8 << 20
 	r.Static("/assets", "./assets")
+
+	UserRoutes(r)
+
 	r.POST("/api/uploads", controllers.Upload)
-	r.POST("/api/signup", controllers.Signup)
-	r.POST("/api/login", controllers.Login)
-	r.GET("/api/users", middlewares.RequiredAuth, func(c *gin.Context) {
-		user, _ := c.Get("user")
-		// user.(models.User).Name
-		c.JSON(http.StatusOK, gin.H{
-			"message": user,
-		})
-	})
 	r.GET("/api/recipes", middlewares.RequiredAuth, controllers.FindRecipe)
 	r.GET("/api/recipes/:id", middlewares.RequiredAuth, controllers.FindOneRecipe)
 	r.POST("/api/recipes", middlewares.RequiredAuth, controllers.CreateRecipe)

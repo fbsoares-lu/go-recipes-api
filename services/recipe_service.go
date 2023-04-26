@@ -29,7 +29,7 @@ func DeleteRecipeService(id int) (models.Recipe, error) {
 	recipe, err := FindByIdRecipeService(id)
 
 	if recipe.ID == 0 {
-		return recipe, errors.New("Recipe not found")
+		return recipe, errors.New("recipe not found")
 	}
 
 	repositories.DeleteRecipe(id)

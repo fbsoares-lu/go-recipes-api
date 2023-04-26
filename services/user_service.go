@@ -1,61 +1,64 @@
 package services
 
 import (
+	"errors"
 	"fbsoares-lu/go-recipes-api/models"
 	"fbsoares-lu/go-recipes-api/repositories"
-	"net/http"
+	"fmt"
 	"os"
 	"time"
 
-	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 	"golang.org/x/crypto/bcrypt"
 )
 
-func FindByEmailUserService(email string, c *gin.Context) models.User {
-	user := repositories.FindByEmail(email)
-
-	if user.ID == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Invalid email or password",
-		})
-	}
-
-	return user
+type UserService struct {
+	UserRepository repositories.UserRepository
 }
 
-func CreateUserService(user models.User, c *gin.Context) {
+func (us *UserService) FindByEmail(email string) (*models.User, error) {
+	user, err := us.UserRepository.FindByEmail(email)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if user.ID == 0 {
+		return nil, errors.New("user not found")
+	}
+
+	return user, nil
+}
+
+func (us *UserService) CreateUser(user models.User) error {
 	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Failed to read body",
-		})
-		return
+		return err
 	}
 
-	result := repositories.Create(user.Name, user.Email, string(hash), user.Role)
+	userError := us.UserRepository.Create(user.Name, user.Email, string(hash), user.Role)
 
-	if result.Error != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Falied to create user",
-		})
+	if userError != nil {
+		return userError
 	}
+
+	return nil
 }
 
-func DecodePassword(hasedPassword string, password string, c *gin.Context) {
+func (us *UserService) DecodePassword(hasedPassword string, password string) error {
 	err := bcrypt.CompareHashAndPassword([]byte(hasedPassword), []byte(password))
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Failed comparation",
-		})
+		return err
 	}
+
+	return nil
 }
 
-func Authentication(email string, password string, c *gin.Context) {
-	user := FindByEmailUserService(email, c)
-	DecodePassword(user.Password, password, c)
+func (us *UserService) Authentication(email string, password string) (string, error) {
+	user, _ := us.FindByEmail(email)
+	us.DecodePassword(user.Password, password)
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub": user.ID,
@@ -65,11 +68,8 @@ func Authentication(email string, password string, c *gin.Context) {
 	tokenString, err := token.SignedString([]byte(os.Getenv("SECRET")))
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Failed comparation",
-		})
+		return "", fmt.Errorf("failed to get token: %v", err)
 	}
 
-	c.SetSameSite(http.SameSiteLaxMode)
-	c.SetCookie("Authorization", tokenString, 3600*24*30, "", "", false, true)
+	return tokenString, nil
 }

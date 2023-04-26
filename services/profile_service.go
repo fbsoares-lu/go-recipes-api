@@ -10,7 +10,7 @@ func FindOneProfileService(id int) (models.Profile, error) {
 	profile, err := repositories.FindByIdProfile(id)
 
 	if profile.ID == 0 {
-		return profile, errors.New("Profile not found")
+		return profile, errors.New("profile not found")
 	}
 
 	return profile, err
