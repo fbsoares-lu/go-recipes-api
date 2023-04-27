@@ -28,7 +28,7 @@ func (uc *UserController) Signup(c *gin.Context) {
 		return
 	}
 
-	err := uc.UserService.CreateUser(user)
+	err := uc.UserService.CreateUserService(user)
 
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)

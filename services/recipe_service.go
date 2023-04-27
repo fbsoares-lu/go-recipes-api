@@ -6,32 +6,56 @@ import (
 	"fbsoares-lu/go-recipes-api/repositories"
 )
 
-func FindRecipeService() ([]models.Recipe, error) {
-	recipes, err := repositories.FindRecipe()
+type RecipeService struct {
+	RecipeRepository repositories.RecipeRepository
+}
+
+func (service *RecipeService) FindRecipeService() (*[]models.Recipe, error) {
+	recipes, err := service.RecipeRepository.Find()
 	return recipes, err
 }
 
-func FindByIdRecipeService(id int) (models.Recipe, error) {
-	recipe, err := repositories.FindByIdRecipe(id)
+func (service *RecipeService) FindByIdRecipeService(id int) (*models.Recipe, error) {
+	recipe, err := service.RecipeRepository.FindById(id)
+
+	if recipe.ID == 0 {
+		return nil, errors.New("recipe not found")
+	}
+
 	return recipe, err
 }
 
-func CreateRecipeService(recipe models.Recipe) {
-	repositories.CreateRecipe(recipe)
+func (service *RecipeService) CreateRecipeService(recipe models.Recipe) error {
+	err := service.RecipeRepository.Create(recipe)
+	return err
 }
 
-func SaveRepiceService(id int, recipe models.Recipe) (models.Recipe, error) {
-	response, err := repositories.SaveRepice(id, recipe)
+func (service *RecipeService) SaveRepiceService(id int, recipe models.Recipe) (*models.Recipe, error) {
+	currentRecipe, err := service.RecipeRepository.FindById(id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if currentRecipe.ID == 0 {
+		return nil, errors.New("recipe not found")
+	}
+
+	response, err := service.RecipeRepository.Save(id, recipe)
 	return response, err
 }
 
-func DeleteRecipeService(id int) (models.Recipe, error) {
-	recipe, err := FindByIdRecipeService(id)
+func (service *RecipeService) DeleteRecipeService(id int) error {
+	recipe, err := service.RecipeRepository.FindById(id)
 
-	if recipe.ID == 0 {
-		return recipe, errors.New("recipe not found")
+	if err != nil {
+		return errors.New("failed to find recipe")
 	}
 
-	repositories.DeleteRecipe(id)
-	return recipe, err
+	if recipe.ID == 0 {
+		return errors.New("recipe not found")
+	}
+
+	service.RecipeRepository.Delete(id)
+	return err
 }

@@ -10,5 +10,5 @@ type Profile struct {
 	Biography string
 	UserID    int
 	User      User
-	File      File
+	File      File `gorm:"foreignKey:ProfileID"`
 }

@@ -30,7 +30,7 @@ func (us *UserService) FindByEmail(email string) (*models.User, error) {
 	return user, nil
 }
 
-func (us *UserService) CreateUser(user models.User) error {
+func (us *UserService) CreateUserService(user models.User) error {
 	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
 
 	if err != nil {

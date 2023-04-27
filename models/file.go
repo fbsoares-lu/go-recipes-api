@@ -5,6 +5,6 @@ import "gorm.io/gorm"
 type File struct {
 	gorm.Model
 	OriginalName string
-	RecipeId     uint
-	ProfileID    uint
+	RecipeID     uint
+	ProfileID    uint `gorm:"uniqueIndex"`
 }

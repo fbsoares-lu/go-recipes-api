@@ -9,8 +9,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func FindRecipe(c *gin.Context) {
-	recipes, err := services.FindRecipeService()
+type RecipeController struct {
+	RecipeService services.RecipeService
+}
+
+func (controller *RecipeController) FindRecipe(c *gin.Context) {
+	recipes, err := controller.RecipeService.FindRecipeService()
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -22,11 +26,11 @@ func FindRecipe(c *gin.Context) {
 	c.JSON(http.StatusOK, recipes)
 }
 
-func FindOneRecipe(c *gin.Context) {
+func (controller *RecipeController) FindOneRecipe(c *gin.Context) {
 	recipeId := c.Params.ByName("id")
 	formatId, _ := strconv.Atoi(recipeId)
 
-	recipe, err := services.FindByIdRecipeService(formatId)
+	recipe, err := controller.RecipeService.FindByIdRecipeService(formatId)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -38,7 +42,7 @@ func FindOneRecipe(c *gin.Context) {
 	c.JSON(http.StatusOK, recipe)
 }
 
-func CreateRecipe(c *gin.Context) {
+func (controller *RecipeController) CreateRecipe(c *gin.Context) {
 	var recipe models.Recipe
 
 	if err := c.ShouldBindJSON(&recipe); err != nil {
@@ -47,17 +51,22 @@ func CreateRecipe(c *gin.Context) {
 		return
 	}
 
-	services.CreateRecipeService(recipe)
+	err := controller.RecipeService.CreateRecipeService(recipe)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"error": err.Error(),
+		})
+	}
 	c.JSON(http.StatusOK, gin.H{})
 }
 
-func UpdateRecipe(c *gin.Context) {
+func (controller *RecipeController) UpdateRecipe(c *gin.Context) {
 	recipeId := c.Params.ByName("id")
 	formatId, _ := strconv.Atoi(recipeId)
 
 	var recipe models.Recipe
 
-	updatedRecipe, err := services.SaveRepiceService(formatId, recipe)
+	updatedRecipe, err := controller.RecipeService.SaveRepiceService(formatId, recipe)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -68,11 +77,11 @@ func UpdateRecipe(c *gin.Context) {
 	c.JSON(http.StatusOK, updatedRecipe)
 }
 
-func DeleteRecipe(c *gin.Context) {
+func (controller *RecipeController) DeleteRecipe(c *gin.Context) {
 	recipeId := c.Params.ByName("id")
 	formatId, _ := strconv.Atoi(recipeId)
 
-	_, err := services.DeleteRecipeService(formatId)
+	err := controller.RecipeService.DeleteRecipeService(formatId)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{

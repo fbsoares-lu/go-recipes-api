@@ -12,5 +12,4 @@ type Recipe struct {
 	Files           []File        `json:"files"`
 	Steps           []Step        `json:"steps"`
 	UserID          uint
-	User            User
 }
