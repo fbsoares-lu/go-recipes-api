@@ -5,6 +5,5 @@ import "gorm.io/gorm"
 type File struct {
 	gorm.Model
 	OriginalName string
-	RecipeID     uint
-	ProfileID    uint `gorm:"uniqueIndex"`
+	Recipes      []*Recipe `json:"files" gorm:"many2many:recipe_files;"`
 }

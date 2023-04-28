@@ -21,12 +21,12 @@ func (uc *UserController) Signup(c *gin.Context) {
 		return
 	}
 
-	if err := models.Validate(&user); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
-		return
-	}
+	// if err := models.User{}.Validate(&user); err != nil {
+	// 	c.JSON(http.StatusBadRequest, gin.H{
+	// 		"error": err.Error(),
+	// 	})
+	// 	return
+	// }
 
 	err := uc.UserService.CreateUserService(user)
 

@@ -1,14 +1,24 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"gopkg.in/validator.v2"
+	"gorm.io/gorm"
+)
 
 type Profile struct {
 	gorm.Model
-	Rg        string
-	Cpf       string
-	Birthday  string
-	Biography string
-	UserID    int
-	User      User
-	File      File `gorm:"foreignKey:ProfileID"`
+	Rg        string `json:"rg" validate:"min=7,max=7" gorm:"unique"`
+	Cpf       string `json:"cpf" validate:"min=11,max=11"  gorm:"unique"`
+	Birthday  string `json:"birthday" validate:"nonzero"`
+	Biography string `json:"biography" validate:"nonzero"`
+	UserID    uint
+	FileID    uint
+	File      File
+}
+
+func (v *Profile) Validate(profile *Profile) error {
+	if err := validator.Validate(profile); err != nil {
+		return err
+	}
+	return nil
 }

@@ -9,7 +9,7 @@ type Recipe struct {
 	PreparationTime string        `json:"preparation_time"`
 	PeopleServed    int           `json:"people_served"`
 	Ingredients     []*Ingredient `json:"ingredients" gorm:"many2many:recipe_ingredients;"`
-	Files           []File        `json:"files"`
+	Files           []*File       `json:"files" gorm:"many2many:recipe_files;"`
 	Steps           []Step        `json:"steps"`
 	UserID          uint
 }

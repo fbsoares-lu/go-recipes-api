@@ -12,22 +12,36 @@ type RecipeService struct {
 
 func (service *RecipeService) FindRecipeService() (*[]models.Recipe, error) {
 	recipes, err := service.RecipeRepository.Find()
-	return recipes, err
+
+	if err != nil {
+		return nil, err
+	}
+
+	return recipes, nil
 }
 
 func (service *RecipeService) FindByIdRecipeService(id int) (*models.Recipe, error) {
 	recipe, err := service.RecipeRepository.FindById(id)
 
+	if err != nil {
+		return nil, err
+	}
+
 	if recipe.ID == 0 {
 		return nil, errors.New("recipe not found")
 	}
 
-	return recipe, err
+	return recipe, nil
 }
 
 func (service *RecipeService) CreateRecipeService(recipe models.Recipe) error {
 	err := service.RecipeRepository.Create(recipe)
-	return err
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (service *RecipeService) SaveRepiceService(id int, recipe models.Recipe) (*models.Recipe, error) {
@@ -42,7 +56,12 @@ func (service *RecipeService) SaveRepiceService(id int, recipe models.Recipe) (*
 	}
 
 	response, err := service.RecipeRepository.Save(id, recipe)
-	return response, err
+
+	if err != nil {
+		return nil, err
+	}
+
+	return response, nil
 }
 
 func (service *RecipeService) DeleteRecipeService(id int) error {
@@ -56,6 +75,11 @@ func (service *RecipeService) DeleteRecipeService(id int) error {
 		return errors.New("recipe not found")
 	}
 
-	service.RecipeRepository.Delete(id)
-	return err
+	err = service.RecipeRepository.Delete(id)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

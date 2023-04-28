@@ -12,9 +12,10 @@ type User struct {
 	Password string `json:"password" validate:"nonzero"`
 	Role     string `json:"role" validate:"nonzero"`
 	Recipes  []Recipe
+	Profile  Profile
 }
 
-func Validate(user *User) error {
+func (v *User) Validate(user *User) error {
 	if err := validator.Validate(user); err != nil {
 		return err
 	}
