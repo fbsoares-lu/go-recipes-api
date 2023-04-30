@@ -1,16 +1,18 @@
 package models
 
 import (
+	"time"
+
 	"gopkg.in/validator.v2"
 	"gorm.io/gorm"
 )
 
 type Profile struct {
 	gorm.Model
-	Rg        string `json:"rg" validate:"min=7,max=7" gorm:"unique"`
-	Cpf       string `json:"cpf" validate:"min=11,max=11"  gorm:"unique"`
-	Birthday  string `json:"birthday" validate:"nonzero"`
-	Biography string `json:"biography" validate:"nonzero"`
+	Rg        string    `json:"rg" validate:"min=7,max=7" gorm:"unique"`
+	Cpf       string    `json:"cpf" validate:"min=11,max=11"  gorm:"unique"`
+	Birthday  time.Time `json:"birthday" validate:"nonzero"`
+	Biography string    `json:"biography" validate:"nonzero"`
 	UserID    uint
 	FileID    uint
 	File      File

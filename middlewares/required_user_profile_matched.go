@@ -14,6 +14,7 @@ func RequiredUserProfileMatched(c *gin.Context) {
 
 	payloadProfile := user.(models.User).Profile.ID
 	userHasProfile := payloadProfile == 0
+
 	if userHasProfile {
 		c.AbortWithStatus(http.StatusUnauthorized)
 	}
