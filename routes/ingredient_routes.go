@@ -10,6 +10,6 @@ import (
 func IngredientRoutes(r *gin.Engine) {
 	routes := r.Group("/api/ingredients")
 
-	routes.POST("/api/ingredients", middlewares.RequiredAuth, controllers.CreateIngredient)
-	routes.GET("/api/ingredients", middlewares.RequiredAuth, controllers.FindIngredient)
+	routes.POST("/", middlewares.RequiredAuth, controllers.CreateIngredient)
+	routes.GET("/", middlewares.RequiredAuth, controllers.FindIngredient)
 }

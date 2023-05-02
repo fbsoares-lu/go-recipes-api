@@ -34,8 +34,8 @@ func (service *RecipeService) FindByIdRecipeService(id int) (*models.Recipe, err
 	return recipe, nil
 }
 
-func (service *RecipeService) CreateRecipeService(recipe models.Recipe) error {
-	err := service.RecipeRepository.Create(recipe)
+func (service *RecipeService) CreateRecipeService(recipe models.Recipe, userId int) error {
+	err := service.RecipeRepository.Create(recipe, userId)
 
 	if err != nil {
 		return err

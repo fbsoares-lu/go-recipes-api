@@ -44,6 +44,9 @@ func (controller *RecipeController) FindOneRecipe(c *gin.Context) {
 
 func (controller *RecipeController) CreateRecipe(c *gin.Context) {
 	var recipe models.Recipe
+	user, _ := c.Get("user")
+
+	userId := user.(models.User).ID
 
 	if err := c.ShouldBindJSON(&recipe); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -51,7 +54,7 @@ func (controller *RecipeController) CreateRecipe(c *gin.Context) {
 		return
 	}
 
-	err := controller.RecipeService.CreateRecipeService(recipe)
+	err := controller.RecipeService.CreateRecipeService(recipe, int(userId))
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"error": err.Error(),

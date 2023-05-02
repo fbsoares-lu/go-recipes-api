@@ -10,7 +10,7 @@ import (
 type RecipeRepository interface {
 	Find() (*[]models.Recipe, error)
 	FindById(id int) (*models.Recipe, error)
-	Create(recipe models.Recipe) error
+	Create(recipe models.Recipe, userId int) error
 	Save(id int, recipe models.Recipe) (*models.Recipe, error)
 	Delete(id int) error
 }
@@ -21,7 +21,7 @@ type GORMRecipeRepository struct {
 
 func (r *GORMRecipeRepository) Find() (*[]models.Recipe, error) {
 	var recipes []models.Recipe
-	err := r.DB.Find(&recipes).Where("deleted_at", nil).Preload("User").Find(&recipes).Error
+	err := r.DB.Find(&recipes).Where("deleted_at", nil).Find(&recipes).Error
 	return &recipes, err
 }
 
@@ -31,8 +31,8 @@ func (r *GORMRecipeRepository) FindById(id int) (*models.Recipe, error) {
 	return &recipe, err
 }
 
-func (r *GORMRecipeRepository) Create(recipe models.Recipe) error {
-	err := r.DB.Create(&recipe).Error
+func (r *GORMRecipeRepository) Create(recipe models.Recipe, userId int) error {
+	err := r.DB.Create(&models.Recipe{Name: recipe.Name, Description: recipe.Description, PreparationTime: recipe.PreparationTime, PeopleServed: recipe.PeopleServed, UserID: uint(userId), Files: recipe.Files, Ingredients: recipe.Ingredients}).Error
 	return err
 }
 
