@@ -42,33 +42,14 @@ To get a local copy up and running follow these simple example steps.
 
 To get a local copy up and running follow these simple example steps.
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1.Clone the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/fbsoares-lu/go-recipes-api
    ```
-3. Install NPM packages
+2.Run
    ```sh
-   npm install
+   go run main.go
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
-
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-
-<!-- CONTACT -->
-## Contact
-
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
-
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
 
 [Go]: https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white
 [Go-url]: https://go.dev
